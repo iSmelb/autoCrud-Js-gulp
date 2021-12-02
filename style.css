@@ -50,3 +50,41 @@ main .List_element h4 {
 .List_element ul.show {
     display: block;
 }
+
+.confirmDelet {
+    display: none;
+}
+.confirmDelet.show {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(180, 5, 5, 0.37);
+}
+
+.yes_or_no {
+    width: 200px;
+    height: 100px;
+    background-color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    flex-wrap: wrap;
+}
+
+.yes_or_no span {
+    width: 100%;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.yes_or_no button {
+    font-size: 20px;
+    margin-right: 5px;
+}
