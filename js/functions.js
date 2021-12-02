@@ -5,13 +5,13 @@ function pushElement(arrForPush, obj) {                  // функция дл�
 }
 
 function createMenu() {                                  // функция которая создаёт меню Авто. Юзеры Продукты и вешает на каждый обработчик на создание списка
-    const productTitle = createDiv('Product_Title')
+    const productTitle = createDomElement('div', {class: 'Product_Title'})
     productTitle.addEventListener('click', () => createListElements(arrProducts))
 
-    const carsTitle = createDiv('Cars_Title')
+    const carsTitle = createDomElement('div', {class: 'Cars_Title'})
     carsTitle.addEventListener('click', () => createListElements(arrCars))
 
-    const userTitle = createDiv('User_Title')
+    const userTitle = createDomElement('div', {class: 'User_Title'})
     userTitle.addEventListener('click', () => createListElements(arrUsers))
 
     productTitle.innerText = 'Products'
@@ -22,10 +22,10 @@ function createMenu() {                                  // функция ко�
 }
 
 function createDivElement(arrElement, arr) {            // функция которая создаёт отдельный контейнер для каждого еллемента списка. В ней есть пока титул и список характеристик, позже будут кнопки
-    const div = createDiv('List_element')
-    div.setAttribute('data-id', arrElement.id)
-    const title = creatreTitleH(4, (arr.indexOf(arrElement) + 1) + '.' + arrElement.name)
-    const ul = createUl('information')
+    const div = createDomElement('div', {class: 'List_element', data_Id: arrElement.id})
+    const title = createDomElement('h4')
+    title.innerText = (arr.indexOf(arrElement) + 1) + '.' + arrElement.name
+    const ul = createDomElement('ul', {class:'information'})
 
     for (let key in arrElement) {
         if(key === 'id') {
