@@ -53,6 +53,7 @@ function deletElement(event, divWithId, arrElements) {                        //
     const divYesNo = createDomElement('div', {class: 'yes_or_no'})
     const span = createDomElement('span', {}, 'Are you sure you want to delete it?')
     const buttonYes = createDomElement('button', {}, 'Yes')
+    let arrJSONFormat
     buttonYes.addEventListener('click', () => {
 
         for (let i = 0; i < arrElements.length; i++) {
@@ -62,6 +63,16 @@ function deletElement(event, divWithId, arrElements) {                        //
             }
         }
 
+        if (arrElements === arrProducts) {
+            arrJSONFormat = JSON.stringify(arrElements)
+            localStorage.setItem('arrProducts', arrJSONFormat)
+        } else if (arrElements === arrCars) {
+            arrJSONFormat = JSON.stringify(arrElements)
+            localStorage.setItem('arrCars', arrJSONFormat)
+        } else if (arrElements === arrUsers) {
+            arrJSONFormat = JSON.stringify(arrElements)
+            localStorage.setItem('arrUsers', arrJSONFormat)
+        }
         document.querySelector('main').removeChild(event.target.parentNode)
         document.body.removeChild(document.querySelector('.confirmDelet'))
     })
@@ -85,5 +96,22 @@ function createListElements(arrElements) {                   // функция �
 
     for(let i = 0; i<arrElements.length; i++) {
         createDivElement(arrElements[i], arrElements)
+    }
+}
+
+function checkLocal() {                                      // проверка локал стор
+    let getProductsFromLocal = localStorage.getItem('arrProducts')
+    if (getProductsFromLocal) {
+        arrProducts = JSON.parse(getProductsFromLocal)
+    }
+
+    let getCarsFromLocal = localStorage.getItem('arrCars')
+    if (getCarsFromLocal) {
+        arrCars = JSON.parse(getCarsFromLocal)
+    }
+
+    let getUsersFromLocal = localStorage.getItem('arrUsers')
+    if (getUsersFromLocal) {
+        arrUsers = JSON.parse(getUsersFromLocal)
     }
 }
