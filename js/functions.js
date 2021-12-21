@@ -4,6 +4,23 @@ function pushElement(arrForPush, obj) {                  // функция дл�
     arrForPush.push(obj)
 }
 
+function checkLocal() {                                      // проверка локал стор
+    let getProductsFromLocal = localStorage.getItem('arrProducts')
+    if (getProductsFromLocal) {
+        arrProducts = JSON.parse(getProductsFromLocal)
+    }
+
+    let getCarsFromLocal = localStorage.getItem('arrCars')
+    if (getCarsFromLocal) {
+        arrCars = JSON.parse(getCarsFromLocal)
+    }
+
+    let getUsersFromLocal = localStorage.getItem('arrUsers')
+    if (getUsersFromLocal) {
+        arrUsers = JSON.parse(getUsersFromLocal)
+    }
+}
+
 function createMenu() {                                  // функция которая создаёт меню Авто. Юзеры Продукты и вешает на каждый обработчик на создание списка
     const productTitle = createDomElement('div', { class: 'Product_Title' })
     productTitle.innerText = 'Products'
@@ -81,7 +98,6 @@ function deletElement(event, divWithId, arrElements) {                        //
     const buttonNo = createDomElement('button', {}, 'No')
     buttonNo.addEventListener('click', () => document.body.removeChild(document.querySelector('.confirmDelet')))
 
-
     divYesNo.append(span, buttonYes, buttonNo)
     div.append(divYesNo)
     document.body.appendChild(div)
@@ -94,27 +110,61 @@ function showUl(event) {                              // показывает и
 
 function createListElements(arrElements) {                   // функция которая затирает старый список и создаёт новый 
     document.querySelector('main').innerHTML = ''
+    const buttonAdd = createDomElement('button', {class: 'button_for_add'}, 'add new')
+    buttonAdd.addEventListener('click', ()=> createFormForAdd(arrElements))
+    document.querySelector('main').appendChild(buttonAdd)
 
     for (let i = 0; i < arrElements.length; i++) {
         createDivElement(arrElements[i], arrElements)
     }
 }
 
-function checkLocal() {                                      // проверка локал стор
-    let getProductsFromLocal = localStorage.getItem('arrProducts')
-    if (getProductsFromLocal) {
-        arrProducts = JSON.parse(getProductsFromLocal)
+function createFormForAdd(arrElements) {                    // создание формы для добавления
+    let nameForm = ['#product-template', "#auto-template", "#user-template"]
+    let nameTamplate
+
+    if (arrElements === arrProducts) {
+        nameTamplate = nameForm[0]
+    } else if (arrElements === arrCars) {
+        nameTamplate = nameForm[1]
+    } else if (arrElements === arrUsers) {
+        nameTamplate = nameForm[2]
     }
 
-    let getCarsFromLocal = localStorage.getItem('arrCars')
-    if (getCarsFromLocal) {
-        arrCars = JSON.parse(getCarsFromLocal)
-    }
+    const getForm = document.querySelector(nameTamplate)
+    const cloneForm = getForm.content.cloneNode(true);
+    document.body.appendChild(cloneForm)
+    const pathToForm = document.forms[0].elements
 
-    let getUsersFromLocal = localStorage.getItem('arrUsers')
-    if (getUsersFromLocal) {
-        arrUsers = JSON.parse(getUsersFromLocal)
+    const buttonSave = document.querySelector('.save_info_button')
+    buttonSave.addEventListener('click', () => errorOrConfirm(addNewElemet, arrElements))
+    const buttonBack = document.querySelector('.back_to_list_button')
+    buttonBack.addEventListener('click', deletForm)
+}
+
+function addNewElemet(arrElements) {                         // добавление нового елемента     
+    const pathToForm = document.forms[0].elements
+    let elementToAdd
+    let arrJSONFormat
+    if (arrElements === arrProducts) {
+        elementToAdd = new Product(pathToForm.name.value, pathToForm.count.value ,pathToForm.price.value, pathToForm.characteristics.value)
+        arrElements.push(elementToAdd)
+        arrJSONFormat = JSON.stringify(arrElements)
+        localStorage.setItem('arrProducts', arrJSONFormat)
+    } else if (arrElements === arrCars) {
+        elementToAdd = new Auto(pathToForm.name.value, pathToForm.count.value ,pathToForm.price.value, pathToForm.transmission.value, pathToForm.characteristics.value)
+        arrElements.push(elementToAdd)
+        arrJSONFormat = JSON.stringify(arrElements)
+        localStorage.setItem('arrCars', arrJSONFormat)
+    } else if (arrElements === arrUsers) {
+        elementToAdd = new User(pathToForm.firstname.value, pathToForm.age.value, pathToForm.email.value, pathToForm.phonenumber.value, pathToForm.balance.value)
+        arrElements.push(elementToAdd)
+        arrJSONFormat = JSON.stringify(arrElements)
+        localStorage.setItem('arrUsers', arrJSONFormat)
     }
+    
+    createDivElement(elementToAdd, arrElements)
+    deletForm()
 }
 
 let numberElement
@@ -233,7 +283,7 @@ function editElementUser(arrElements, pathToForm) {
 
 function errorOrConfirm(funcAfterValid, arrElements) {
     if (numberElement === -2) {         // здесь должна быть валидация
-        console.log('hi')               
+        console.log('error')               
     } else {
         funcAfterValid(arrElements)
     }
