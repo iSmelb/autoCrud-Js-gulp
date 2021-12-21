@@ -122,53 +122,90 @@ let elementForEdit
 
 function editInfo(divWithId, arrElements) {
     if (arrElements === arrProducts) {
-        const getForm = document.querySelector('#product-template')
-        const cloneForm = getForm.content.cloneNode(true);
-        document.body.appendChild(cloneForm)
-        const pathToFormProduct = document.forms[0].elements
-        numberElement = divWithId.getAttribute('data_id')
+        editProduct(divWithId, arrElements)
+    } else if (arrElements === arrCars) {
+        editCar(divWithId, arrElements)
+    } else if (arrElements === arrUsers) {
+        () => { }
+    }
+}
 
-        for (let i = 0; i < arrElements.length; i++) {
-            if (numberElement == arrElements[i].id) {
-                elementForEdit = arrElements.indexOf(arrElements[i])
-                pathToFormProduct.title.value = arrElements[i].name
-                pathToFormProduct.count.value = arrElements[i].count
-                pathToFormProduct.price.value = arrElements[i].price
-                if(arrElements[i].characteristics) {
-                    pathToFormProduct.description.value = arrElements[i].characteristics
-                }
+function editProduct(divWithId, arrElements) {                 // заполнение формы для редоктирования продукта
+    const getForm = document.querySelector('#product-template')
+    const cloneForm = getForm.content.cloneNode(true);
+    document.body.appendChild(cloneForm)
+    const pathToFormProduct = document.forms[0].elements
+    numberElement = divWithId.getAttribute('data_id')
+
+    for (let i = 0; i < arrElements.length; i++) {
+        if (numberElement == arrElements[i].id) {
+            elementForEdit = arrElements.indexOf(arrElements[i])
+            pathToFormProduct.name.value = arrElements[i].name
+            pathToFormProduct.count.value = arrElements[i].count
+            pathToFormProduct.price.value = arrElements[i].price
+            if (arrElements[i].characteristics) {
+                pathToFormProduct.characteristics.value = arrElements[i].characteristics
             }
         }
-
-        const buttonSave = document.querySelector('.save_info_button')
-        buttonSave.addEventListener('click', () => editElementProduct(arrElements, pathToFormProduct))
-        const buttonBack = document.querySelector('.back_to_list_button')
-        buttonBack.addEventListener('click', deletForm)
     }
+
+    const buttonSave = document.querySelector('.save_info_button')
+    buttonSave.addEventListener('click', () => editElementProductOrCar(arrElements, pathToFormProduct))
+    const buttonBack = document.querySelector('.back_to_list_button')
+    buttonBack.addEventListener('click', deletForm)
+}
+
+function editCar(divWithId, arrElements) {                      // заполнение формы для редоктирования машины
+    const getForm = document.querySelector('#auto-template')
+    const cloneForm = getForm.content.cloneNode(true);
+    document.body.appendChild(cloneForm)
+    const pathToFormCar = document.forms[0].elements
+    numberElement = divWithId.getAttribute('data_id')
+
+    for (let i = 0; i < arrElements.length; i++) {
+        if (numberElement == arrElements[i].id) {
+            elementForEdit = arrElements.indexOf(arrElements[i])
+            pathToFormCar.name.value = arrElements[i].name
+            pathToFormCar.count.value = arrElements[i].count
+            pathToFormCar.price.value = arrElements[i].price
+            pathToFormCar.transmission.value = arrElements[i].transmission
+            if (arrElements[i].characteristics) {
+                pathToFormCar.characteristics.value = arrElements[i].characteristics
+            }
+        }
+    }
+
+    const buttonSave = document.querySelector('.save_info_button')
+    buttonSave.addEventListener('click', () => editElementProductOrCar(arrElements, pathToFormCar))
+    const buttonBack = document.querySelector('.back_to_list_button')
+    buttonBack.addEventListener('click', deletForm)
 }
 
 function deletForm() {
     document.body.removeChild(document.forms[0])
 }
 
-function editElementProduct(arrElements, pathToFormProduct) {
-    arrElements[elementForEdit].name = pathToFormProduct.title.value
-    arrElements[elementForEdit].count = pathToFormProduct.count.value
-    arrElements[elementForEdit].price = pathToFormProduct.price.value
-    arrElements[elementForEdit].characteristics = pathToFormProduct.description.value
+function editElementProductOrCar(arrElements, pathToForm) {     // редактирование елмента в массиве
+    arrElements[elementForEdit].name = pathToForm.name.value
+    arrElements[elementForEdit].count = pathToForm.count.value
+    arrElements[elementForEdit].price = pathToForm.price.value
+    arrElements[elementForEdit].characteristics = pathToForm.characteristics.value
+    if(arrElements[elementForEdit].transmission) {
+        arrElements[elementForEdit].transmission = pathToForm.transmission.value
+    }
 
     errorOrConfirm(saveAndEdit, arrElements)
 }
 
 function errorOrConfirm(funcAfterValid, arrElements) {
-    if(numberElement === -2) {
-        console.log('hi')             // здесь должна быть валидация
+    if (numberElement === -2) {         // здесь должна быть валидация
+        console.log('hi')               
     } else {
         funcAfterValid(arrElements)
     }
 }
 
-function saveAndEdit(arrElements) {  // редактирование выбранного елемента
+function saveAndEdit(arrElements) {  // перерендер выбранного елемента
     const title = document.querySelector('.List_element[data_id="' + numberElement + '"]').querySelector('h4')
     title.innerText = (arrElements.indexOf(arrElements[elementForEdit]) + 1) + '.' + arrElements[elementForEdit].name
 

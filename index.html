@@ -59,7 +59,7 @@
     <template id="product-template">
       <form action="" name="product-form" class="product-form">
         <p>
-          <input type="text" name="title" placeholder="Titel of product" />
+          <input type="text" name="name" placeholder="Titel of product" />
         </p>
         <p>
           <input type="number" name="count" placeholder="Count" />
@@ -68,7 +68,7 @@
           <input type="text" name="price" placeholder="Price" />
         </p>
         <p>
-          <input type="text" name="description" placeholder="Description" />
+          <input type="text" name="characteristics" placeholder="Description" />
         </p>
         <p>
           <input type="button" class="save_info_button" value="save">
@@ -79,13 +79,13 @@
     <template id="auto-template">
       <form action="" name="auto-form" class="auto-form">
         <p>
-          <input type="text" name="model" placeholder="Model" />
+          <input type="text" name="name" placeholder="Model" />
         </p>
         <p>
-          <input type="number" name="autocount" placeholder="Count" />
+          <input type="number" name="count" placeholder="Count" />
         </p>
         <p>
-          <input type="text" name="autoprice" placeholder="Price" />
+          <input type="text" name="price" placeholder="Price" />
         </p>
         <p>
           <select name="transmission" id="transmission">
@@ -100,6 +100,10 @@
             name="characteristics"
             placeholder="Characteristics"
           />
+        </p>
+        <p>
+          <input type="button" class="save_info_button" value="save">
+          <input type="button" class="back_to_list_button" value="back">
         </p>
       </form>
     </template>
