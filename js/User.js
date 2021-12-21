@@ -1,7 +1,7 @@
 'use strict';
 
 class User {
-    constructor(name, age, email, tel) {
+    constructor(name, age, email, tel, balance) {
         if(arrUsers.length === 0) {  
             this.id = 1
         } else {
@@ -12,5 +12,6 @@ class User {
         this.age = age
         this.email = email
         this.tel = tel
+        this.balance = balance
     }
 }

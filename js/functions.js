@@ -87,7 +87,7 @@ function deletElement(event, divWithId, arrElements) {                        //
     document.body.appendChild(div)
 }
 
-function showUl(event) {                              // показывает и скрывает сисок характеристик при клике
+function showUl(event) {                              // показывает и скрывает список характеристик при клике
     const ul = event.target.parentNode.querySelector('ul')
     ul.classList.toggle('show')
 }
@@ -126,11 +126,11 @@ function editInfo(divWithId, arrElements) {
     } else if (arrElements === arrCars) {
         editCar(divWithId, arrElements)
     } else if (arrElements === arrUsers) {
-        () => { }
+        editUser(divWithId, arrElements)
     }
 }
 
-function editProduct(divWithId, arrElements) {                 // заполнение формы для редоктирования продукта
+function editProduct(divWithId, arrElements) {                 // заполнение формы для редактирования продукта
     const getForm = document.querySelector('#product-template')
     const cloneForm = getForm.content.cloneNode(true);
     document.body.appendChild(cloneForm)
@@ -155,7 +155,7 @@ function editProduct(divWithId, arrElements) {                 // заполне
     buttonBack.addEventListener('click', deletForm)
 }
 
-function editCar(divWithId, arrElements) {                      // заполнение формы для редоктирования машины
+function editCar(divWithId, arrElements) {                      // заполнение формы для редактирования машины
     const getForm = document.querySelector('#auto-template')
     const cloneForm = getForm.content.cloneNode(true);
     document.body.appendChild(cloneForm)
@@ -181,6 +181,30 @@ function editCar(divWithId, arrElements) {                      // заполн�
     buttonBack.addEventListener('click', deletForm)
 }
 
+function editUser(divWithId, arrElements) {                     // заполнение формы для редактирования пользователя
+    const getForm = document.querySelector('#user-template')
+    const cloneForm = getForm.content.cloneNode(true);
+    document.body.appendChild(cloneForm)
+    const pathToFormUser = document.forms[0].elements
+    numberElement = divWithId.getAttribute('data_id')
+
+    for (let i = 0; i < arrElements.length; i++) {
+        if (numberElement == arrElements[i].id) {
+            elementForEdit = arrElements.indexOf(arrElements[i])
+            pathToFormUser.firstname.value = arrElements[i].name
+            pathToFormUser.age.value = arrElements[i].age
+            pathToFormUser.email.value = arrElements[i].email
+            pathToFormUser.phonenumber.value = arrElements[i].tel
+            pathToFormUser.balance.value = arrElements[i].balance
+        }
+    }
+
+    const buttonSave = document.querySelector('.save_info_button')
+    buttonSave.addEventListener('click', () => editElementUser(arrElements, pathToFormUser))
+    const buttonBack = document.querySelector('.back_to_list_button')
+    buttonBack.addEventListener('click', deletForm)
+}
+
 function deletForm() {
     document.body.removeChild(document.forms[0])
 }
@@ -193,6 +217,16 @@ function editElementProductOrCar(arrElements, pathToForm) {     // редакт�
     if(arrElements[elementForEdit].transmission) {
         arrElements[elementForEdit].transmission = pathToForm.transmission.value
     }
+
+    errorOrConfirm(saveAndEdit, arrElements)
+}
+
+function editElementUser(arrElements, pathToForm) {
+    arrElements[elementForEdit].name = pathToForm.firstname.value
+    arrElements[elementForEdit].age = pathToForm.age.value
+    arrElements[elementForEdit].email = pathToForm.email.value
+    arrElements[elementForEdit].tel = pathToForm.phonenumber.value
+    arrElements[elementForEdit].balance = pathToForm.balance.value
 
     errorOrConfirm(saveAndEdit, arrElements)
 }

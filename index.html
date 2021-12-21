@@ -29,11 +29,11 @@
             placeholder="First name"
           />
         </p>
-        <p>
+        <!-- <p>
           <input required type="text" name="lastname" placeholder="Last name" />
-        </p>
+        </p> -->
         <p>
-          <input required type="text" name="age" placeholder="Age" />
+          <input required type="number" name="age" placeholder="Age" />
         </p>
         <p>
           <input required type="email" name="email" placeholder="Email" />
@@ -41,18 +41,25 @@
         <p>
           <input
             required
-            type="text"
+            type="tel"
             name="phonenumber"
             placeholder="Phone number"
           />
         </p>
         <p>
+          <input required type="number" name="balance" placeholder="User balance">
+        </p>
+        <!-- <p>
           <input
             required
             type="text"
             name="cardnumber"
             placeholder="Card number"
           />
+        </p> -->
+        <p>
+          <input type="button" class="save_info_button" value="save">
+          <input type="button" class="back_to_list_button" value="back">
         </p>
       </form>
     </template>
