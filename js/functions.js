@@ -61,11 +61,18 @@ function createDivElement(arrElement, arrElements) {            // функци�
     buttonDelet.addEventListener('click', event => deletElement(event, div, arrElements))
 
     div.append(title, buttonViev, buttonEdit, buttonDelet, ul)
+
+    if(arrElements !== arrUsers) {
+        const buttonSell = createDomElement('button', {}, 'sell')
+        buttonSell.addEventListener('click', ()=> createCustomerList(div, arrElements))
+        div.append(buttonSell)
+    }
+
     document.querySelector('main').appendChild(div)
 }
 
 function deletElement(event, divWithId, arrElements) {                        //удаление из списка: пользователя, товара или машины, я думаю эту функцию можно лучше сделать, но это лучше вдвоём посмотреть и решить 
-    const deletElement = divWithId.getAttribute('data_id')
+    const deletElement = Number(divWithId.getAttribute('data_id'))
     const div = createDomElement('div', { class: 'confirmDelet' })
     div.classList.toggle('show')
     const divYesNo = createDomElement('div', { class: 'yes_or_no' })
@@ -75,7 +82,7 @@ function deletElement(event, divWithId, arrElements) {                        //
     buttonYes.addEventListener('click', () => {
 
         for (let i = 0; i < arrElements.length; i++) {
-            if (deletElement == arrElements[i].id) {
+            if (deletElement === arrElements[i].id) {
                 arrElements.splice(arrElements.indexOf(arrElements[i]), 1)
                 break
             }
@@ -114,8 +121,12 @@ function createListElements(arrElements) {                   // функция �
     buttonAdd.addEventListener('click', ()=> createFormForAdd(arrElements))
     document.querySelector('main').appendChild(buttonAdd)
 
-    for (let i = 0; i < arrElements.length; i++) {
-        createDivElement(arrElements[i], arrElements)
+    // for (let i = 0; i < arrElements.length; i++) {
+    //     createDivElement(arrElements[i], arrElements)
+    // }
+
+    for(let element of arrElements) {
+        createDivElement(element, arrElements)
     }
 }
 
@@ -167,8 +178,8 @@ function addNewElemet(arrElements) {                         // добавлен
     deletForm()
 }
 
-let numberElement
-let elementForEdit
+let dataIdElement
+let elementForEditOnArr
 
 function editInfo(divWithId, arrElements) {
     if (arrElements === arrProducts) {
@@ -185,17 +196,18 @@ function editProduct(divWithId, arrElements) {                 // заполне
     const cloneForm = getForm.content.cloneNode(true);
     document.body.appendChild(cloneForm)
     const pathToFormProduct = document.forms[0].elements
-    numberElement = divWithId.getAttribute('data_id')
+    dataIdElement = Number(divWithId.getAttribute('data_id'))
 
     for (let i = 0; i < arrElements.length; i++) {
-        if (numberElement == arrElements[i].id) {
-            elementForEdit = arrElements.indexOf(arrElements[i])
+        if (dataIdElement === arrElements[i].id) {
+            elementForEditOnArr = arrElements.indexOf(arrElements[i])
             pathToFormProduct.name.value = arrElements[i].name
             pathToFormProduct.count.value = arrElements[i].count
             pathToFormProduct.price.value = arrElements[i].price
             if (arrElements[i].characteristics) {
                 pathToFormProduct.characteristics.value = arrElements[i].characteristics
             }
+            break
         }
     }
 
@@ -210,11 +222,11 @@ function editCar(divWithId, arrElements) {                      // заполн�
     const cloneForm = getForm.content.cloneNode(true);
     document.body.appendChild(cloneForm)
     const pathToFormCar = document.forms[0].elements
-    numberElement = divWithId.getAttribute('data_id')
+    dataIdElement = Number(divWithId.getAttribute('data_id'))
 
     for (let i = 0; i < arrElements.length; i++) {
-        if (numberElement == arrElements[i].id) {
-            elementForEdit = arrElements.indexOf(arrElements[i])
+        if (dataIdElement === arrElements[i].id) {
+            elementForEditOnArr = arrElements.indexOf(arrElements[i])
             pathToFormCar.name.value = arrElements[i].name
             pathToFormCar.count.value = arrElements[i].count
             pathToFormCar.price.value = arrElements[i].price
@@ -222,6 +234,7 @@ function editCar(divWithId, arrElements) {                      // заполн�
             if (arrElements[i].characteristics) {
                 pathToFormCar.characteristics.value = arrElements[i].characteristics
             }
+            break
         }
     }
 
@@ -236,16 +249,18 @@ function editUser(divWithId, arrElements) {                     // заполн�
     const cloneForm = getForm.content.cloneNode(true);
     document.body.appendChild(cloneForm)
     const pathToFormUser = document.forms[0].elements
-    numberElement = divWithId.getAttribute('data_id')
+    dataIdElement = Number(divWithId.getAttribute('data_id'))
+    console.log(dataIdElement)
 
     for (let i = 0; i < arrElements.length; i++) {
-        if (numberElement == arrElements[i].id) {
-            elementForEdit = arrElements.indexOf(arrElements[i])
+        if (dataIdElement === arrElements[i].id) {
+            elementForEditOnArr = arrElements.indexOf(arrElements[i])
             pathToFormUser.firstname.value = arrElements[i].name
             pathToFormUser.age.value = arrElements[i].age
             pathToFormUser.email.value = arrElements[i].email
             pathToFormUser.phonenumber.value = arrElements[i].tel
             pathToFormUser.balance.value = arrElements[i].balance
+            break
         }
     }
 
@@ -260,29 +275,29 @@ function deletForm() {
 }
 
 function editElementProductOrCar(arrElements, pathToForm) {     // редактирование елмента в массиве
-    arrElements[elementForEdit].name = pathToForm.name.value
-    arrElements[elementForEdit].count = pathToForm.count.value
-    arrElements[elementForEdit].price = pathToForm.price.value
-    arrElements[elementForEdit].characteristics = pathToForm.characteristics.value
-    if(arrElements[elementForEdit].transmission) {
-        arrElements[elementForEdit].transmission = pathToForm.transmission.value
+    arrElements[elementForEditOnArr].name = pathToForm.name.value
+    arrElements[elementForEditOnArr].count = pathToForm.count.value
+    arrElements[elementForEditOnArr].price = pathToForm.price.value
+    arrElements[elementForEditOnArr].characteristics = pathToForm.characteristics.value
+    if(arrElements[elementForEditOnArr].transmission) {
+        arrElements[elementForEditOnArr].transmission = pathToForm.transmission.value
     }
 
     errorOrConfirm(saveAndEdit, arrElements)
 }
 
 function editElementUser(arrElements, pathToForm) {
-    arrElements[elementForEdit].name = pathToForm.firstname.value
-    arrElements[elementForEdit].age = pathToForm.age.value
-    arrElements[elementForEdit].email = pathToForm.email.value
-    arrElements[elementForEdit].tel = pathToForm.phonenumber.value
-    arrElements[elementForEdit].balance = pathToForm.balance.value
+    arrElements[elementForEditOnArr].name = pathToForm.firstname.value
+    arrElements[elementForEditOnArr].age = pathToForm.age.value
+    arrElements[elementForEditOnArr].email = pathToForm.email.value
+    arrElements[elementForEditOnArr].tel = pathToForm.phonenumber.value
+    arrElements[elementForEditOnArr].balance = pathToForm.balance.value
 
     errorOrConfirm(saveAndEdit, arrElements)
 }
 
 function errorOrConfirm(funcAfterValid, arrElements) {
-    if (numberElement === -2) {         // здесь должна быть валидация
+    if (dataIdElement === -2) {         // здесь должна быть валидация
         console.log('error')               
     } else {
         funcAfterValid(arrElements)
@@ -290,18 +305,18 @@ function errorOrConfirm(funcAfterValid, arrElements) {
 }
 
 function saveAndEdit(arrElements) {  // перерендер выбранного елемента
-    const title = document.querySelector('.List_element[data_id="' + numberElement + '"]').querySelector('h4')
-    title.innerText = (arrElements.indexOf(arrElements[elementForEdit]) + 1) + '.' + arrElements[elementForEdit].name
+    const title = document.querySelector('.List_element[data_id="' + dataIdElement + '"]').querySelector('h4')
+    title.innerText = (arrElements.indexOf(arrElements[elementForEditOnArr]) + 1) + '.' + arrElements[elementForEditOnArr].name
 
-    const ul = document.querySelector('.List_element[data_id="' + numberElement + '"]').querySelector('.information')
+    const ul = document.querySelector('.List_element[data_id="' + dataIdElement + '"]').querySelector('.information')
     ul.innerHTML = ''
 
-    for (let key in arrElements[elementForEdit]) {
+    for (let key in arrElements[elementForEditOnArr]) {
         if (key === 'id') {
             continue;
         }
         const li = document.createElement('li')
-        li.innerText = key + ': ' + arrElements[elementForEdit][key]
+        li.innerText = key + ': ' + arrElements[elementForEditOnArr][key]
         ul.appendChild(li)
     }
 
@@ -316,5 +331,71 @@ function saveAndEdit(arrElements) {  // перерендер выбранног�
         arrJSONFormat = JSON.stringify(arrElements)
         localStorage.setItem('arrUsers', arrJSONFormat)
     }
-    deletForm()
+
+    if(document.forms[0]){
+        deletForm()
+    }
+}
+
+function createCustomerList(divWithId, arrElements) {
+    const customerList = createDomElement('div', {class: 'customer_list'})
+
+    for(let i = 0; i < arrUsers.length; i++) {
+        const userDiv = createDomElement('div', {class: 'customer_list_user', data_user_id: arrUsers[i].id})
+        const nameUser = createDomElement('h4', {}, `${arrUsers.indexOf(arrUsers[i]) + 1}. ${arrUsers[i].name} ($${arrUsers[i].balance})`)
+        const inputForCount = createDomElement('input', {type: 'number', placeholder: 'Enter a count product'})
+        const buttonSell = createDomElement('button', {}, 'sell')
+        buttonSell.addEventListener('click', ()=> sellItem(divWithId, arrElements, userDiv))
+
+        userDiv.append(nameUser, inputForCount, buttonSell)
+        customerList.append(userDiv)
+    }
+
+    document.body.append(customerList)
+}
+
+function sellItem(divWithId, arrElements, userDivId) {
+    let itemId = Number(divWithId.getAttribute('data_id'))
+    let userId = Number(userDivId.getAttribute('data_user_id'))
+    let countForBuy = Number(document.querySelector('.customer_list_user[data_user_id="' + userId + '"]').querySelector('input').value)
+    let itemForSell
+    let userWhoBuy
+
+    for(let item of arrElements) {
+        if(item.id === itemId) {
+            itemForSell = item
+            elementForEditOnArr = arrElements.indexOf(item)
+            break
+        }
+    }
+
+    for(let user of arrUsers) {
+        if(user.id === userId) {
+            userWhoBuy = user
+            break
+        }
+    }
+    
+    if(countForBuy <= Number(itemForSell.count)) {
+        let totalPrice = countForBuy * itemForSell.price
+        
+        if(totalPrice <= userWhoBuy.balance) {
+            userWhoBuy.balance -= totalPrice
+            itemForSell.count -= countForBuy
+
+            let sellingItem = `${itemForSell.name}(${countForBuy})`
+            userWhoBuy.boughtItem.push(sellingItem)
+
+            dataIdElement = itemId
+            saveAndEdit(arrElements)
+            let arrJSONFormat = JSON.stringify(arrUsers)
+            localStorage.setItem('arrUsers', arrJSONFormat)
+
+            document.body.removeChild(document.querySelector('.customer_list'))
+        } else{
+            alert('error')
+        }
+    } else {
+        alert('error')
+    }
 }

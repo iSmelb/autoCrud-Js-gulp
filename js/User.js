@@ -13,5 +13,6 @@ class User {
         this.email = email
         this.tel = tel
         this.balance = balance
+        this.boughtItem = []
     }
 }
