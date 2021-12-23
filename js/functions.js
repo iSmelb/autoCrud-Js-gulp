@@ -39,6 +39,8 @@ function createMenu() {                                  // функция ко�
 
 function createDivElement(arrElement, arrElements) {            // функция которая создаёт отдельный контейнер для каждого еллемента списка. В ней есть пока титул и список характеристик, позже будут кнопки
     const div = createDomElement('div', { class: 'List_element', data_id: arrElement.id })
+    const divForInfo = createDomElement('div', {class: 'div_for_info'})
+    const divForButton = createDomElement('div', {class: 'div_for_button'})
     const title = createDomElement('h4', {}, (arrElements.indexOf(arrElement) + 1) + '.' + arrElement.name)
     const ul = createDomElement('ul', { class: 'information' })
 
@@ -50,24 +52,26 @@ function createDivElement(arrElement, arrElements) {            // функци�
         li.innerText = key + ': ' + arrElement[key]
         ul.appendChild(li)
     }
+    divForInfo.append(title , ul)
 
-    const buttonViev = createDomElement('button', {}, 'Viev')
+    const buttonViev = createDomElement('button', {class: 'viev', title: 'Viev'})
     buttonViev.addEventListener('click', event => showUl(event))
 
-    const buttonEdit = createDomElement('button', {}, 'Edit')
+    const buttonEdit = createDomElement('button', {class: 'edit', title: 'Edit'})
     buttonEdit.addEventListener('click', () => editInfo(div, arrElements))
 
-    const buttonDelet = createDomElement('button', {}, 'Delet')
+    const buttonDelet = createDomElement('button', { class: 'delet', title: 'Delet'}, )
     buttonDelet.addEventListener('click', event => deletElement(event, div, arrElements))
 
-    div.append(title, buttonViev, buttonEdit, buttonDelet, ul)
+    divForButton.append(buttonViev, buttonEdit, buttonDelet)
 
     if(arrElements !== arrUsers) {
-        const buttonSell = createDomElement('button', {}, 'sell')
+        const buttonSell = createDomElement('button', {class: 'sale', title: 'Sell'},)
         buttonSell.addEventListener('click', ()=> createCustomerList(div, arrElements))
-        div.append(buttonSell)
+        divForButton.append(buttonSell)
     }
 
+    div.append(divForInfo, divForButton)
     document.querySelector('main').appendChild(div)
 }
 
@@ -111,19 +115,15 @@ function deletElement(event, divWithId, arrElements) {                        //
 }
 
 function showUl(event) {                              // показывает и скрывает список характеристик при клике
-    const ul = event.target.parentNode.querySelector('ul')
+    const ul = event.target.parentNode.parentNode.querySelector('ul')
     ul.classList.toggle('show')
 }
 
 function createListElements(arrElements) {                   // функция которая затирает старый список и создаёт новый 
     document.querySelector('main').innerHTML = ''
-    const buttonAdd = createDomElement('button', {class: 'button_for_add'}, 'add new')
+    const buttonAdd = createDomElement('button', {class: 'button_for_add'}, 'Add new')
     buttonAdd.addEventListener('click', ()=> createFormForAdd(arrElements))
     document.querySelector('main').appendChild(buttonAdd)
-
-    // for (let i = 0; i < arrElements.length; i++) {
-    //     createDivElement(arrElements[i], arrElements)
-    // }
 
     for(let element of arrElements) {
         createDivElement(element, arrElements)
@@ -144,7 +144,9 @@ function createFormForAdd(arrElements) {                    // создание 
 
     const getForm = document.querySelector(nameTamplate)
     const cloneForm = getForm.content.cloneNode(true);
-    document.body.appendChild(cloneForm)
+    const divForForm = createDomElement('div', {class: 'conteiner_for_form'})
+    divForForm.append(cloneForm)
+    document.body.appendChild(divForForm)
     const pathToForm = document.forms[0].elements
 
     const buttonSave = document.querySelector('.save_info_button')
@@ -194,7 +196,9 @@ function editInfo(divWithId, arrElements) {
 function editProduct(divWithId, arrElements) {                 // заполнение формы для редактирования продукта
     const getForm = document.querySelector('#product-template')
     const cloneForm = getForm.content.cloneNode(true);
-    document.body.appendChild(cloneForm)
+    const divForForm = createDomElement('div', {class: 'conteiner_for_form'})
+    divForForm.append(cloneForm)
+    document.body.appendChild(divForForm)
     const pathToFormProduct = document.forms[0].elements
     dataIdElement = Number(divWithId.getAttribute('data_id'))
 
@@ -220,7 +224,9 @@ function editProduct(divWithId, arrElements) {                 // заполне
 function editCar(divWithId, arrElements) {                      // заполнение формы для редактирования машины
     const getForm = document.querySelector('#auto-template')
     const cloneForm = getForm.content.cloneNode(true);
-    document.body.appendChild(cloneForm)
+    const divForForm = createDomElement('div', {class: 'conteiner_for_form'})
+    divForForm.append(cloneForm)
+    document.body.appendChild(divForForm)
     const pathToFormCar = document.forms[0].elements
     dataIdElement = Number(divWithId.getAttribute('data_id'))
 
@@ -247,10 +253,11 @@ function editCar(divWithId, arrElements) {                      // заполн�
 function editUser(divWithId, arrElements) {                     // заполнение формы для редактирования пользователя
     const getForm = document.querySelector('#user-template')
     const cloneForm = getForm.content.cloneNode(true);
-    document.body.appendChild(cloneForm)
+    const divForForm = createDomElement('div', {class: 'conteiner_for_form'})
+    divForForm.append(cloneForm)
+    document.body.appendChild(divForForm)
     const pathToFormUser = document.forms[0].elements
     dataIdElement = Number(divWithId.getAttribute('data_id'))
-    console.log(dataIdElement)
 
     for (let i = 0; i < arrElements.length; i++) {
         if (dataIdElement === arrElements[i].id) {
@@ -271,7 +278,7 @@ function editUser(divWithId, arrElements) {                     // заполн�
 }
 
 function deletForm() {
-    document.body.removeChild(document.forms[0])
+    document.querySelector('.conteiner_for_form').remove()
 }
 
 function editElementProductOrCar(arrElements, pathToForm) {     // редактирование елмента в массиве

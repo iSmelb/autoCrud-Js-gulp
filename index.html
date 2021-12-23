@@ -5,116 +5,115 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Auto-app</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/style.css"/>
   </head>
   <body>
-    <header>
-      <div class="logo">
-        <img src="images/auto.png" alt="auto" />
-      </div>
-      <div class="btn-wrapper"></div>
-    </header>
-    <main>
-      <!-- <div class="users"></div>
-      <div class="products"></div>
-      <div class="cars"></div> -->
-    </main>
-    <template id="user-template">
-      <form action="" class="user-form" name="user-form">
-        <p>
-          <input
-            required
-            type="text"
-            name="firstname"
-            placeholder="First name"
-          />
-        </p>
-        <!-- <p>
-          <input required type="text" name="lastname" placeholder="Last name" />
-        </p> -->
-        <p>
-          <input required type="number" name="age" placeholder="Age" />
-        </p>
-        <p>
-          <input required type="email" name="email" placeholder="Email" />
-        </p>
-        <p>
-          <input
-            required
-            type="tel"
-            name="phonenumber"
-            placeholder="Phone number"
-          />
-        </p>
-        <p>
-          <input required type="number" name="balance" placeholder="User balance">
-        </p>
-        <!-- <p>
-          <input
-            required
-            type="text"
-            name="cardnumber"
-            placeholder="Card number"
-          />
-        </p> -->
-        <p>
-          <input type="button" class="save_info_button" value="save">
-          <input type="button" class="back_to_list_button" value="back">
-        </p>
-      </form>
-    </template>
-    <template id="product-template">
-      <form action="" name="product-form" class="product-form">
-        <p>
-          <input type="text" name="name" placeholder="Titel of product" />
-        </p>
-        <p>
-          <input type="number" name="count" placeholder="Count" />
-        </p>
-        <p>
-          <input type="text" name="price" placeholder="Price" />
-        </p>
-        <p>
-          <input type="text" name="characteristics" placeholder="Description" />
-        </p>
-        <p>
-          <input type="button" class="save_info_button" value="save">
-          <input type="button" class="back_to_list_button" value="back">
-        </p>
-      </form>
-    </template>
-    <template id="auto-template">
-      <form action="" name="auto-form" class="auto-form">
-        <p>
-          <input type="text" name="name" placeholder="Model" />
-        </p>
-        <p>
-          <input type="number" name="count" placeholder="Count" />
-        </p>
-        <p>
-          <input type="text" name="price" placeholder="Price" />
-        </p>
-        <p>
-          <select name="transmission" id="transmission">
-            <option value="" disabled selected>Chose transmission</option>
-            <option value="manual">manual</option>
-            <option value="auto">auto</option>
-          </select>
-        </p>
-        <p>
-          <input
-            type="text"
-            name="characteristics"
-            placeholder="Characteristics"
-          />
-        </p>
-        <p>
-          <input type="button" class="save_info_button" value="save">
-          <input type="button" class="back_to_list_button" value="back">
-        </p>
-      </form>
-    </template>
-    <footer></footer>
+    <div class="wrapper">
+      <header class="center">
+        <div class="logo">
+          <img src="images/auto.png" alt="auto" />
+        </div>
+        <div class="btn-wrapper"></div>
+      </header>
+      <main class="center">
+      </main>
+      <template id="user-template">
+        <form action="" class="user-form" name="user-form">
+          <p>
+            <input
+              required
+              type="text"
+              name="firstname"
+              placeholder="First name"
+            />
+          </p>
+          <!-- <p>
+            <input required type="text" name="lastname" placeholder="Last name" />
+          </p> -->
+          <p>
+            <input required type="number" name="age" placeholder="Age" />
+          </p>
+          <p>
+            <input required type="email" name="email" placeholder="Email" />
+          </p>
+          <p>
+            <input
+              required
+              type="tel"
+              name="phonenumber"
+              placeholder="Phone number"
+            />
+          </p>
+          <p>
+            <input required type="number" name="balance" placeholder="User balance">
+          </p>
+          <!-- <p>
+            <input
+              required
+              type="text"
+              name="cardnumber"
+              placeholder="Card number"
+            />
+          </p> -->
+          <p>
+            <input type="button" class="save_info_button" value="save">
+            <input type="button" class="back_to_list_button" value="back">
+          </p>
+        </form>
+      </template>
+      <template id="product-template">
+        <form action="" name="product-form" class="product-form">
+          <p>
+            <input type="text" name="name" placeholder="Titel of product" />
+          </p>
+          <p>
+            <input type="number" name="count" placeholder="Count" />
+          </p>
+          <p>
+            <input type="text" name="price" placeholder="Price" />
+          </p>
+          <p>
+            <input type="text" name="characteristics" placeholder="Description" />
+          </p>
+          <p>
+            <input type="button" class="save_info_button" value="save">
+            <input type="button" class="back_to_list_button" value="back">
+          </p>
+        </form>
+      </template>
+      <template id="auto-template">
+        <form action="" name="auto-form" class="auto-form">
+          <p>
+            <input type="text" name="name" placeholder="Model" />
+          </p>
+          <p>
+            <input type="number" name="count" placeholder="Count" />
+          </p>
+          <p>
+            <input type="text" name="price" placeholder="Price" />
+          </p>
+          <p>
+            <select name="transmission" id="transmission">
+              <option value="" disabled selected>Chose transmission</option>
+              <option value="manual">manual</option>
+              <option value="auto">auto</option>
+            </select>
+          </p>
+          <p>
+            <textarea
+              name="characteristics"
+              placeholder="Characteristics"
+            >
+            </textarea>
+          </p>
+          <p>
+            <input type="button" class="save_info_button" value="save">
+            <input type="button" class="back_to_list_button" value="back">
+          </p>
+        </form>
+      </template>
+      <footer class="center"></footer>
+    </div> 
     <script src="js/createDOMelements.js"></script>
     <script src="js/functions.js"></script>
     <script src="js/Product.js"></script>
