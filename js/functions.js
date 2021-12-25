@@ -67,6 +67,9 @@ function createDivElement(arrElement, arrElements) {            // функци�
 
     if(arrElements !== arrUsers) {
         const buttonSell = createDomElement('button', {class: 'sale', title: 'Sell'},)
+        if(Number(arrElement.count === 0)) {
+            buttonSell.setAttribute("disabled", "disabled")
+        }
         buttonSell.addEventListener('click', ()=> createCustomerList(div, arrElements))
         divForButton.append(buttonSell)
     }
@@ -76,11 +79,12 @@ function createDivElement(arrElement, arrElements) {            // функци�
 }
 
 function deletElement(event, divWithId, arrElements) {                        //удаление из списка: пользователя, товара или машины, я думаю эту функцию можно лучше сделать, но это лучше вдвоём посмотреть и решить 
+    document.body.classList.add('stop-scrolling')
     const deletElement = Number(divWithId.getAttribute('data_id'))
     const div = createDomElement('div', { class: 'confirmDelet' })
     div.classList.toggle('show')
     const divYesNo = createDomElement('div', { class: 'yes_or_no' })
-    const span = createDomElement('span', {}, 'Are you sure you want to delete it?')
+    const span = createDomElement('span', {},`Are u sure u want delet ${divWithId.querySelector('h4').innerText}?`)
     const buttonYes = createDomElement('button', {}, 'Yes')
     let arrJSONFormat
     buttonYes.addEventListener('click', () => {
@@ -102,12 +106,16 @@ function deletElement(event, divWithId, arrElements) {                        //
             arrJSONFormat = JSON.stringify(arrElements)
             localStorage.setItem('arrUsers', arrJSONFormat)
         }
-        document.querySelector('main').removeChild(event.target.parentNode)
+        document.querySelector('main').removeChild(event.target.parentNode.parentNode)
         document.body.removeChild(document.querySelector('.confirmDelet'))
+        document.body.classList.remove('stop-scrolling')
     })
 
     const buttonNo = createDomElement('button', {}, 'No')
-    buttonNo.addEventListener('click', () => document.body.removeChild(document.querySelector('.confirmDelet')))
+    buttonNo.addEventListener('click', () => {
+        document.body.removeChild(document.querySelector('.confirmDelet'))
+        document.body.classList.remove('stop-scrolling')
+    })
 
     divYesNo.append(span, buttonYes, buttonNo)
     div.append(divYesNo)
@@ -145,9 +153,9 @@ function createFormForAdd(arrElements) {                    // создание 
     const getForm = document.querySelector(nameTamplate)
     const cloneForm = getForm.content.cloneNode(true);
     const divForForm = createDomElement('div', {class: 'conteiner_for_form'})
+    document.body.classList.toggle('stop-scrolling')
     divForForm.append(cloneForm)
     document.body.appendChild(divForForm)
-    const pathToForm = document.forms[0].elements
 
     const buttonSave = document.querySelector('.save_info_button')
     buttonSave.addEventListener('click', () => errorOrConfirm(addNewElemet, arrElements))
@@ -184,6 +192,7 @@ let dataIdElement
 let elementForEditOnArr
 
 function editInfo(divWithId, arrElements) {
+    document.body.classList.toggle('stop-scrolling')
     if (arrElements === arrProducts) {
         editProduct(divWithId, arrElements)
     } else if (arrElements === arrCars) {
@@ -201,6 +210,7 @@ function editProduct(divWithId, arrElements) {                 // заполне
     document.body.appendChild(divForForm)
     const pathToFormProduct = document.forms[0].elements
     dataIdElement = Number(divWithId.getAttribute('data_id'))
+    
 
     for (let i = 0; i < arrElements.length; i++) {
         if (dataIdElement === arrElements[i].id) {
@@ -211,6 +221,7 @@ function editProduct(divWithId, arrElements) {                 // заполне
             if (arrElements[i].characteristics) {
                 pathToFormProduct.characteristics.value = arrElements[i].characteristics
             }
+
             break
         }
     }
@@ -277,8 +288,9 @@ function editUser(divWithId, arrElements) {                     // заполн�
     buttonBack.addEventListener('click', deletForm)
 }
 
-function deletForm() {
+function deletForm() {                                           // удаляет форму
     document.querySelector('.conteiner_for_form').remove()
+    document.body.classList.toggle('stop-scrolling')
 }
 
 function editElementProductOrCar(arrElements, pathToForm) {     // редактирование елмента в массиве
@@ -288,6 +300,11 @@ function editElementProductOrCar(arrElements, pathToForm) {     // редакт�
     arrElements[elementForEditOnArr].characteristics = pathToForm.characteristics.value
     if(arrElements[elementForEditOnArr].transmission) {
         arrElements[elementForEditOnArr].transmission = pathToForm.transmission.value
+    }
+
+    const buttonForUnDisabled = document.querySelector('.List_element[data_id="' + dataIdElement + '"]').querySelector('.sale')
+    if (arrElements[elementForEditOnArr].count > 0) {
+        buttonForUnDisabled.removeAttribute("disabled")
     }
 
     errorOrConfirm(saveAndEdit, arrElements)
@@ -344,27 +361,38 @@ function saveAndEdit(arrElements) {  // перерендер выбранног�
     }
 }
 
-function createCustomerList(divWithId, arrElements) {
+function createCustomerList(divWithId, arrElements) {                           // создание списка пользователей для продажи товара
+    document.body.classList.toggle('stop-scrolling')
+    const customerListConteiner = createDomElement('div', {class: 'customer_list_conteiner'})
     const customerList = createDomElement('div', {class: 'customer_list'})
+    const closeList = createDomElement('div', {class: 'close_customer_list'}, 'close')
+    closeList.addEventListener('click', () => {
+        document.querySelector('.customer_list_conteiner').remove()
+        document.body.classList.toggle('stop-scrolling')
+    })
+    customerList.append(closeList)
 
     for(let i = 0; i < arrUsers.length; i++) {
         const userDiv = createDomElement('div', {class: 'customer_list_user', data_user_id: arrUsers[i].id})
-        const nameUser = createDomElement('h4', {}, `${arrUsers.indexOf(arrUsers[i]) + 1}. ${arrUsers[i].name} ($${arrUsers[i].balance})`)
-        const inputForCount = createDomElement('input', {type: 'number', placeholder: 'Enter a count product'})
+        const nameUser = createDomElement('label', {}, `${arrUsers.indexOf(arrUsers[i]) + 1}. ${arrUsers[i].name} ($${arrUsers[i].balance})`)
+        const inputForCount = createDomElement('input', {type: 'text', placeholder: 'Enter a count product'})
         const buttonSell = createDomElement('button', {}, 'sell')
         buttonSell.addEventListener('click', ()=> sellItem(divWithId, arrElements, userDiv))
 
-        userDiv.append(nameUser, inputForCount, buttonSell)
+        nameUser.append(inputForCount)
+        userDiv.append(nameUser, buttonSell)
         customerList.append(userDiv)
     }
 
-    document.body.append(customerList)
+    customerListConteiner.append(customerList)
+    document.body.append(customerListConteiner)
 }
 
 function sellItem(divWithId, arrElements, userDivId) {
     let itemId = Number(divWithId.getAttribute('data_id'))
     let userId = Number(userDivId.getAttribute('data_user_id'))
     let countForBuy = Number(document.querySelector('.customer_list_user[data_user_id="' + userId + '"]').querySelector('input').value)
+    const buttonForDisabled = document.querySelector('.List_element[data_id="' + itemId + '"]').querySelector('.sale')
     let itemForSell
     let userWhoBuy
 
@@ -389,6 +417,9 @@ function sellItem(divWithId, arrElements, userDivId) {
         if(totalPrice <= userWhoBuy.balance) {
             userWhoBuy.balance -= totalPrice
             itemForSell.count -= countForBuy
+            if(itemForSell.count === 0) {
+                buttonForDisabled.setAttribute("disabled", "disabled")
+            }
 
             let sellingItem = `${itemForSell.name}(${countForBuy})`
             userWhoBuy.boughtItem.push(sellingItem)
@@ -398,11 +429,13 @@ function sellItem(divWithId, arrElements, userDivId) {
             let arrJSONFormat = JSON.stringify(arrUsers)
             localStorage.setItem('arrUsers', arrJSONFormat)
 
-            document.body.removeChild(document.querySelector('.customer_list'))
+            document.body.removeChild(document.querySelector('.customer_list_conteiner'))
         } else{
             alert('error')
         }
     } else {
         alert('error')
     }
+
+    document.body.classList.toggle('stop-scrolling')
 }

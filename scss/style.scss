@@ -12,11 +12,25 @@
     flex-grow: 1;
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #f39422;
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background: url('../images/wallpapers.jpg') center no-repeat #000;
+    background: linear-gradient( to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('../images/wallpapers.jpg') center no-repeat;
     background-size: cover;
     font-size: 22px;
+}
+
+.stop-scrolling {
+    height: 100%;
+    overflow: hidden;
 }
 
 // .center {
@@ -68,21 +82,20 @@ main {
         border-radius: 12px;
         color: #fff;
         border: none;
-        background-color: #24a3ff;
-        box-shadow: 0 0 20px rgba(36, 163, 255, 0.5);
+        background-color: #f39422;
+        box-shadow: 0 0 20px rgba(250, 162, 0, 0.76);
         font-size: 18px;
         font-weight: 700;
         cursor: pointer;
 
         &:hover {
-            background-color: #0085ff;
+            background-color: #e4820b;
           }
     }
 
     .List_element {
-        border-bottom: 2px solid #fff;
+        border-bottom: 1px solid #fff;
         padding: 10px 5px;
-        //margin: 1px 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -96,6 +109,9 @@ main {
             list-style: none;
             li {
                 margin-bottom: 3px;
+                padding: 4px 10px;
+                border-radius: 8px;
+                background: #414141bf;
             }
         }
 
@@ -162,6 +178,11 @@ main {
                 background-color: rgb(87, 255, 87);
             }
         }
+
+        button[disabled="disabled"] {
+            background-color: rgb(160, 160, 160);
+            pointer-events: none;
+        }
     }
 }
 
@@ -169,7 +190,7 @@ main {
     display: none;
 }
 .confirmDelet.show {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
@@ -178,18 +199,19 @@ main {
     justify-content: center;
     align-items: center;
     background: rgba(180, 5, 5, 0.37);
+    color: rgba(255,255,255,.8);
 }
 
 .yes_or_no {
-    width: 200px;
-    height: 100px;
-    background-color: white;
+    width: 300px;
+    background-color: #272a34;
     padding: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 30px;
+    border-radius: 10px;
     flex-wrap: wrap;
+    box-shadow: 0 0 15px rgba(178, 178, 178, 0.5);
 }
 
 .yes_or_no span {
@@ -201,6 +223,17 @@ main {
 .yes_or_no button {
     font-size: 20px;
     margin-right: 5px;
+    background: #f39422;
+    border-color: #f39422;
+    cursor: pointer;
+    width: 50px;
+    padding: 3px 0;
+    border-radius: 8px;
+
+    &:hover {
+        background: #e4820b;
+        border-color: #e4820b;
+    }
 }
 
 .conteiner_for_form {
@@ -244,7 +277,13 @@ main {
             outline: none;
         }
 
+        input:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px #272a34 inset !important;
+        -webkit-text-fill-color: #ffffff !important;
+        }
+
         textarea {
+            height: 150px;
             resize: none;
         }
 
@@ -256,6 +295,73 @@ main {
             width: calc(50% - 15px);
             padding: 10px 0;
             border-radius: 8px;
+
+            &:hover {
+                background: #e4820b;
+                border-color: #e4820b;
+            }
+        }
+    }
+}
+
+.customer_list_conteiner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.863);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    overflow: hidden;
+}
+
+.customer_list {
+    width: 700px;
+    height: 70vh;
+    border: 3px solid rgb(0, 0, 0);
+    border-radius: 8px;
+    overflow: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #272a34;
+    position: relative;
+
+    .close_customer_list{
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .customer_list_user {
+        margin-bottom: 30px;
+        padding: 5px;
+
+        label {
+            display: inline-block;
+        }
+
+        input {
+            margin-top: 10px;
+            display: block;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,.2);
+            color: rgba(255,255,255,.8) !important;
+            background: transparent;
+            outline: none;
+        }
+
+        button {
+            background: #f39422;
+            border: 2px solid #f39422;
+            cursor: pointer;
+            width: 50px;
+            border-radius: 8px;
+            margin-left: 10px;
 
             &:hover {
                 background: #e4820b;
