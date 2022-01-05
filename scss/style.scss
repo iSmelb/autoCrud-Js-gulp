@@ -73,6 +73,13 @@ header {
 
 main {
     color: #fff;
+    
+    strong {
+        display: block;
+        margin: 10px auto 0;
+        width: 300px;
+        text-align: center;
+    }
 
     .button_for_add {
         display: block;
@@ -319,12 +326,11 @@ main {
 }
 
 .customer_list {
-    width: 700px;
+    width: 550px;
     height: 70vh;
-    border: 3px solid rgb(0, 0, 0);
     border-radius: 8px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
     overflow: auto;
-    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -332,9 +338,21 @@ main {
     position: relative;
 
     .close_customer_list{
-        position: absolute;
-        top: 0;
-        right: 0;
+        position: sticky;
+        top: 1px;
+        left: 100%;
+        border-left: 2px solid;
+        border-bottom: 2px solid;
+        border-color: rgb(117, 0, 0);
+        border-radius: 0 3px 0 8px;
+        padding: 5px;
+        cursor: pointer;
+        background: rgb(216, 63, 63);
+        color: #000;
+
+        &:hover {
+            background: rgb(240, 55, 55);
+        }
     }
 
     .customer_list_user {

@@ -156,10 +156,12 @@ function deletElement(event, divWithId, arrElements) {
       }
     }
     setLocal(arrElements);
+    if(arrElements.length === 0) {
+      const listEmpty = createDomElement('strong', { class: 'listEmpty'}, 'The list is empty')
+      document.querySelector("main").appendChild(listEmpty)
+    }
 
-    document
-      .querySelector("main")
-      .removeChild(event.target.parentNode.parentNode);
+    document.querySelector("main").removeChild(event.target.parentNode.parentNode);
     document.body.removeChild(document.querySelector(".confirmDelet"));
     document.body.classList.remove("stop-scrolling");
   });
@@ -194,6 +196,11 @@ function createListElements(arrElements) {
 
   for (let element of arrElements) {
     createDivElement(element, arrElements);
+  }
+
+  if(arrElements.length === 0) {
+    const listEmpty = createDomElement('strong', { class: 'listEmpty'}, 'The list is empty')
+    document.querySelector("main").appendChild(listEmpty)
   }
 }
 
@@ -257,6 +264,10 @@ function addNewElemet(arrElements) {
     arrElements.push(elementToAdd);
   }
   setLocal(arrElements);
+  
+  if(arrElements.length === 1) {
+    document.querySelector(".listEmpty").remove()
+  }
 
   createDivElement(elementToAdd, arrElements);
   deletForm();
@@ -265,110 +276,181 @@ function addNewElemet(arrElements) {
 let dataIdElement;
 let elementForEditOnArr;
 
-function editInfo(divWithId, arrElements) {
+function editInfo(divWithId, arrElements) {                //создание формы для редактирования
   document.body.classList.toggle("stop-scrolling");
+  let nameForm = ["#product-template", "#auto-template", "#user-template"];
+  let nameTamplate;
+
   if (arrElements === arrProducts) {
-    editProduct(divWithId, arrElements);
+    nameTamplate = nameForm[0];
   } else if (arrElements === arrCars) {
-    editCar(divWithId, arrElements);
+    nameTamplate = nameForm[1];
   } else if (arrElements === arrUsers) {
-    editUser(divWithId, arrElements);
+    nameTamplate = nameForm[2];
   }
-}
 
-function editProduct(divWithId, arrElements) {
-  // заполнение формы для редактирования продукта
-  const getForm = document.querySelector("#product-template");
+  const getForm = document.querySelector(nameTamplate);
   const cloneForm = getForm.content.cloneNode(true);
   const divForForm = createDomElement("div", { class: "conteiner_for_form" });
   divForForm.append(cloneForm);
   document.body.appendChild(divForForm);
-  const pathToFormProduct = document.forms[0].elements;
+  const pathToForm = document.forms[0].elements;
   dataIdElement = Number(divWithId.getAttribute("data_id"));
 
-  for (let i = 0; i < arrElements.length; i++) {
-    if (dataIdElement === arrElements[i].id) {
-      elementForEditOnArr = arrElements.indexOf(arrElements[i]);
-      pathToFormProduct.name.value = arrElements[i].name;
-      pathToFormProduct.count.value = arrElements[i].count;
-      pathToFormProduct.price.value = arrElements[i].price;
-      if (arrElements[i].characteristics) {
-        pathToFormProduct.characteristics.value =
-          arrElements[i].characteristics;
+  setInputOnForm(dataIdElement, arrElements, pathToForm)
+
+  const buttonSave = document.querySelector(".save_info_button");
+  if (arrElements === arrProducts || arrElements === arrCars) {
+    buttonSave.addEventListener("click", () =>
+      editElementProductOrCar(arrElements, pathToForm)
+    );
+  } else {
+    buttonSave.addEventListener("click", () =>
+      editElementUser(arrElements, pathToForm)
+    );
+  }
+  const buttonBack = document.querySelector(".back_to_list_button");
+  buttonBack.addEventListener("click", deletForm);
+}
+
+function setInputOnForm(idElement, arrElements, pathToForm) {           //заполнение формы для редактирования
+  if (arrElements === arrProducts) {
+    for (let i = 0; i < arrElements.length; i++) {
+      if (idElement === arrElements[i].id) {
+        elementForEditOnArr = arrElements.indexOf(arrElements[i]);
+        pathToForm.name.value = arrElements[i].name;
+        pathToForm.count.value = arrElements[i].count;
+        pathToForm.price.value = arrElements[i].price;
+        if (arrElements[i].characteristics) {
+          pathToForm.characteristics.value =
+            arrElements[i].characteristics;
+        }
+        break;
       }
-      break;
     }
-  }
-
-  const buttonSave = document.querySelector(".save_info_button");
-  buttonSave.addEventListener("click", () =>
-    editElementProductOrCar(arrElements, pathToFormProduct)
-  );
-  const buttonBack = document.querySelector(".back_to_list_button");
-  buttonBack.addEventListener("click", deletForm);
-}
-
-function editCar(divWithId, arrElements) {
-  // заполнение формы для редактирования машины
-  const getForm = document.querySelector("#auto-template");
-  const cloneForm = getForm.content.cloneNode(true);
-  const divForForm = createDomElement("div", { class: "conteiner_for_form" });
-  divForForm.append(cloneForm);
-  document.body.appendChild(divForForm);
-  const pathToFormCar = document.forms[0].elements;
-  dataIdElement = Number(divWithId.getAttribute("data_id"));
-
-  for (let i = 0; i < arrElements.length; i++) {
-    if (dataIdElement === arrElements[i].id) {
-      elementForEditOnArr = arrElements.indexOf(arrElements[i]);
-      pathToFormCar.name.value = arrElements[i].name;
-      pathToFormCar.count.value = arrElements[i].count;
-      pathToFormCar.price.value = arrElements[i].price;
-      pathToFormCar.transmission.value = arrElements[i].transmission;
-      if (arrElements[i].characteristics) {
-        pathToFormCar.characteristics.value = arrElements[i].characteristics;
+  } else if (arrElements === arrCars) {
+    for (let i = 0; i < arrElements.length; i++) {
+      if (idElement === arrElements[i].id) {
+        elementForEditOnArr = arrElements.indexOf(arrElements[i]);
+        pathToForm.name.value = arrElements[i].name;
+        pathToForm.count.value = arrElements[i].count;
+        pathToForm.price.value = arrElements[i].price;
+        pathToForm.transmission.value = arrElements[i].transmission;
+        if (arrElements[i].characteristics) {
+          pathToForm.characteristics.value = arrElements[i].characteristics;
+        }
+        break;
       }
-      break;
+    }
+  } else if (arrElements === arrUsers) {
+    for (let i = 0; i < arrElements.length; i++) {
+      if (idElement === arrElements[i].id) {
+        elementForEditOnArr = arrElements.indexOf(arrElements[i]);
+        pathToForm.firstname.value = arrElements[i].name;
+        pathToForm.age.value = arrElements[i].age;
+        pathToForm.email.value = arrElements[i].email;
+        pathToForm.phonenumber.value = arrElements[i].tel;
+        pathToForm.balance.value = arrElements[i].balance;
+        break;
+      }
     }
   }
-
-  const buttonSave = document.querySelector(".save_info_button");
-  buttonSave.addEventListener("click", () =>
-    editElementProductOrCar(arrElements, pathToFormCar)
-  );
-  const buttonBack = document.querySelector(".back_to_list_button");
-  buttonBack.addEventListener("click", deletForm);
 }
 
-function editUser(divWithId, arrElements) {
-  // заполнение формы для редактирования пользователя
-  const getForm = document.querySelector("#user-template");
-  const cloneForm = getForm.content.cloneNode(true);
-  const divForForm = createDomElement("div", { class: "conteiner_for_form" });
-  divForForm.append(cloneForm);
-  document.body.appendChild(divForForm);
-  const pathToFormUser = document.forms[0].elements;
-  dataIdElement = Number(divWithId.getAttribute("data_id"));
+// function editProduct(divWithId, arrElements) {
+//   // заполнение формы для редактирования продукта
+//   const getForm = document.querySelector("#product-template");
+//   const cloneForm = getForm.content.cloneNode(true);
+//   const divForForm = createDomElement("div", { class: "conteiner_for_form" });
+//   divForForm.append(cloneForm);
+//   document.body.appendChild(divForForm);
+//   const pathToFormProduct = document.forms[0].elements;
+//   dataIdElement = Number(divWithId.getAttribute("data_id"));
 
-  for (let i = 0; i < arrElements.length; i++) {
-    if (dataIdElement === arrElements[i].id) {
-      elementForEditOnArr = arrElements.indexOf(arrElements[i]);
-      pathToFormUser.firstname.value = arrElements[i].name;
-      pathToFormUser.age.value = arrElements[i].age;
-      pathToFormUser.email.value = arrElements[i].email;
-      pathToFormUser.phonenumber.value = arrElements[i].tel;
-      pathToFormUser.balance.value = arrElements[i].balance;
-      break;
-    }
-  }
+//   for (let i = 0; i < arrElements.length; i++) {
+//     if (dataIdElement === arrElements[i].id) {
+//       elementForEditOnArr = arrElements.indexOf(arrElements[i]);
+//       pathToFormProduct.name.value = arrElements[i].name;
+//       pathToFormProduct.count.value = arrElements[i].count;
+//       pathToFormProduct.price.value = arrElements[i].price;
+//       if (arrElements[i].characteristics) {
+//         pathToFormProduct.characteristics.value =
+//           arrElements[i].characteristics;
+//       }
+//       break;
+//     }
+//   }
 
-  const buttonSave = document.querySelector(".save_info_button");
-  buttonSave.addEventListener("click", () =>
-    editElementUser(arrElements, pathToFormUser)
-  );
-  const buttonBack = document.querySelector(".back_to_list_button");
-  buttonBack.addEventListener("click", deletForm);
-}
+//   const buttonSave = document.querySelector(".save_info_button");
+//   buttonSave.addEventListener("click", () =>
+//     editElementProductOrCar(arrElements, pathToFormProduct)
+//   );
+//   const buttonBack = document.querySelector(".back_to_list_button");
+//   buttonBack.addEventListener("click", deletForm);
+// }
+
+// function editCar(divWithId, arrElements) {
+//   // заполнение формы для редактирования машины
+//   const getForm = document.querySelector("#auto-template");
+//   const cloneForm = getForm.content.cloneNode(true);
+//   const divForForm = createDomElement("div", { class: "conteiner_for_form" });
+//   divForForm.append(cloneForm);
+//   document.body.appendChild(divForForm);
+//   const pathToFormCar = document.forms[0].elements;
+//   dataIdElement = Number(divWithId.getAttribute("data_id"));
+
+//   for (let i = 0; i < arrElements.length; i++) {
+//     if (dataIdElement === arrElements[i].id) {
+//       elementForEditOnArr = arrElements.indexOf(arrElements[i]);
+//       pathToFormCar.name.value = arrElements[i].name;
+//       pathToFormCar.count.value = arrElements[i].count;
+//       pathToFormCar.price.value = arrElements[i].price;
+//       pathToFormCar.transmission.value = arrElements[i].transmission;
+//       if (arrElements[i].characteristics) {
+//         pathToFormCar.characteristics.value = arrElements[i].characteristics;
+//       }
+//       break;
+//     }
+//   }
+
+//   const buttonSave = document.querySelector(".save_info_button");
+//   buttonSave.addEventListener("click", () =>
+//     editElementProductOrCar(arrElements, pathToFormCar)
+//   );
+//   const buttonBack = document.querySelector(".back_to_list_button");
+//   buttonBack.addEventListener("click", deletForm);
+// }
+
+// function editUser(divWithId, arrElements) {
+//   // заполнение формы для редактирования пользователя
+//   const getForm = document.querySelector("#user-template");
+//   const cloneForm = getForm.content.cloneNode(true);
+//   const divForForm = createDomElement("div", { class: "conteiner_for_form" });
+//   divForForm.append(cloneForm);
+//   document.body.appendChild(divForForm);
+//   const pathToFormUser = document.forms[0].elements;
+//   dataIdElement = Number(divWithId.getAttribute("data_id"));
+
+//   for (let i = 0; i < arrElements.length; i++) {
+//     if (dataIdElement === arrElements[i].id) {
+//       elementForEditOnArr = arrElements.indexOf(arrElements[i]);
+//       pathToFormUser.firstname.value = arrElements[i].name;
+//       pathToFormUser.age.value = arrElements[i].age;
+//       pathToFormUser.email.value = arrElements[i].email;
+//       pathToFormUser.phonenumber.value = arrElements[i].tel;
+//       pathToFormUser.balance.value = arrElements[i].balance;
+//       pathToFormUser.bought_item.value = arrElements[i].boughtItem;
+//       break;
+//     }
+//   }
+
+//   const buttonSave = document.querySelector(".save_info_button");
+//   buttonSave.addEventListener("click", () =>
+//     editElementUser(arrElements, pathToFormUser)
+//   );
+//   const buttonBack = document.querySelector(".back_to_list_button");
+//   buttonBack.addEventListener("click", deletForm);
+// }
 
 function deletForm() {
   // удаляет форму
@@ -388,9 +470,7 @@ function editElementProductOrCar(arrElements, pathToForm) {
       pathToForm.transmission.value;
   }
 
-  const buttonForUnDisabled = document
-    .querySelector('.List_element[data_id="' + dataIdElement + '"]')
-    .querySelector(".sale");
+  const buttonForUnDisabled = document.querySelector('.List_element[data_id="' + dataIdElement + '"]').querySelector(".sale");
   if (arrElements[elementForEditOnArr].count > 0) {
     buttonForUnDisabled.removeAttribute("disabled");
   }
@@ -415,34 +495,32 @@ function errorOrConfirm(funcAfterValid, arrElements) {
     let formDataObj = Object.fromEntries(formData);
     if (!namePattern.test(formDataObj.firstname)) {
       //   formDataObj.firstname.trim()
-      // здесь должна быть валидация
       console.log("error");
-    }
-    if (!agePattern.test(formDataObj.age)) {
+    } else if (!agePattern.test(formDataObj.age)) {
       console.log("error");
-    }
-    if (!emailPattern.test(formDataObj.email)) {
+    } else if (!emailPattern.test(formDataObj.email)) {
       console.log("error");
-    }
-    if (!phoneNumberPattern.test(formDataObj.phonenumber)) {
+    } else if (!phoneNumberPattern.test(formDataObj.phonenumber)) {
       console.log("error");
-    }
-    if (!balancePattern.test(formDataObj.balance)) {
+    } else if (!balancePattern.test(formDataObj.balance)) {
       console.log("error");
     } else {
       funcAfterValid(arrElements);
     }
-  }
-  if (arrElements === arrCars) {
+  } else if (arrElements === arrCars) {
     const pathToForm = document.forms[0];
     let formData = new FormData(pathToForm);
     let formDataObj = Object.fromEntries(formData);
-  }
-  if (arrElements === arrProducts) {
+
+    funcAfterValid(arrElements)
+  } else if (arrElements === arrProducts) {
     const pathToForm = document.forms[0];
     let formData = new FormData(pathToForm);
     let formDataObj = Object.fromEntries(formData);
+
+    funcAfterValid(arrElements)
   }
+
 }
 
 function saveAndEdit(arrElements) {
@@ -495,8 +573,7 @@ function createCustomerList(divWithId, arrElements) {
     const nameUser = createDomElement(
       "label",
       {},
-      `${arrUsers.indexOf(arrUsers[i]) + 1}. ${arrUsers[i].name} ($${
-        arrUsers[i].balance
+      `${arrUsers.indexOf(arrUsers[i]) + 1}. ${arrUsers[i].name} ($${arrUsers[i].balance
       })`
     );
     const inputForCount = createDomElement("input", {
