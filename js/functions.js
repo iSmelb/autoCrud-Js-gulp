@@ -95,11 +95,11 @@ function createDivElement(arrElement, arrElements) {
   createUlinfo(ul, arrElement);
   divForInfo.append(title, ul);
 
-  const buttonViev = createDomElement("button", {
-    class: "viev",
-    title: "Viev",
+  const buttonView = createDomElement("button", {
+    class: "view",
+    title: "View",
   });
-  buttonViev.addEventListener("click", (event) => showUl(event));
+  buttonView.addEventListener("click", (event) => showUl(event));
 
   const buttonEdit = createDomElement("button", {
     class: "edit",
@@ -108,14 +108,14 @@ function createDivElement(arrElement, arrElements) {
   buttonEdit.addEventListener("click", () => editInfo(div, arrElements));
 
   const buttonDelet = createDomElement("button", {
-    class: "delet",
-    title: "Delet",
+    class: "delete",
+    title: "Delete",
   });
   buttonDelet.addEventListener("click", (event) =>
     deletElement(event, div, arrElements)
   );
 
-  divForButton.append(buttonViev, buttonEdit, buttonDelet);
+  divForButton.append(buttonView, buttonEdit, buttonDelet);
 
   if (arrElements !== arrUsers) {
     const buttonSell = createDomElement("button", {
@@ -136,7 +136,7 @@ function createDivElement(arrElement, arrElements) {
 }
 
 function deletElement(event, divWithId, arrElements) {
-  //удаление из списка: пользователя, товара или машины, я думаю эту функцию можно лучше сделать, но это лучше вдвоём посмотреть и решить
+  //удаление из списка: пользователя, товара или машины
   document.body.classList.add("stop-scrolling");
   const deletElement = Number(divWithId.getAttribute("data_id"));
   const div = createDomElement("div", { class: "confirmDelet" });
@@ -156,8 +156,8 @@ function deletElement(event, divWithId, arrElements) {
       }
     }
     setLocal(arrElements);
-    if(arrElements.length === 0) {
-      const listEmpty = createDomElement('strong', { class: 'listEmpty'}, 'The list is empty')
+    if (arrElements.length === 0) {
+      const listEmpty = createDomElement('strong', { class: 'listEmpty' }, 'The list is empty')
       document.querySelector("main").appendChild(listEmpty)
     }
 
@@ -198,8 +198,8 @@ function createListElements(arrElements) {
     createDivElement(element, arrElements);
   }
 
-  if(arrElements.length === 0) {
-    const listEmpty = createDomElement('strong', { class: 'listEmpty'}, 'The list is empty')
+  if (arrElements.length === 0) {
+    const listEmpty = createDomElement('strong', { class: 'listEmpty' }, 'The list is empty')
     document.querySelector("main").appendChild(listEmpty)
   }
 }
@@ -264,8 +264,8 @@ function addNewElemet(arrElements) {
     arrElements.push(elementToAdd);
   }
   setLocal(arrElements);
-  
-  if(arrElements.length === 1) {
+
+  if (arrElements.length === 1) {
     document.querySelector(".listEmpty").remove()
   }
 
@@ -356,101 +356,6 @@ function setInputOnForm(idElement, arrElements, pathToForm) {           //зап
     }
   }
 }
-
-// function editProduct(divWithId, arrElements) {
-//   // заполнение формы для редактирования продукта
-//   const getForm = document.querySelector("#product-template");
-//   const cloneForm = getForm.content.cloneNode(true);
-//   const divForForm = createDomElement("div", { class: "conteiner_for_form" });
-//   divForForm.append(cloneForm);
-//   document.body.appendChild(divForForm);
-//   const pathToFormProduct = document.forms[0].elements;
-//   dataIdElement = Number(divWithId.getAttribute("data_id"));
-
-//   for (let i = 0; i < arrElements.length; i++) {
-//     if (dataIdElement === arrElements[i].id) {
-//       elementForEditOnArr = arrElements.indexOf(arrElements[i]);
-//       pathToFormProduct.name.value = arrElements[i].name;
-//       pathToFormProduct.count.value = arrElements[i].count;
-//       pathToFormProduct.price.value = arrElements[i].price;
-//       if (arrElements[i].characteristics) {
-//         pathToFormProduct.characteristics.value =
-//           arrElements[i].characteristics;
-//       }
-//       break;
-//     }
-//   }
-
-//   const buttonSave = document.querySelector(".save_info_button");
-//   buttonSave.addEventListener("click", () =>
-//     editElementProductOrCar(arrElements, pathToFormProduct)
-//   );
-//   const buttonBack = document.querySelector(".back_to_list_button");
-//   buttonBack.addEventListener("click", deletForm);
-// }
-
-// function editCar(divWithId, arrElements) {
-//   // заполнение формы для редактирования машины
-//   const getForm = document.querySelector("#auto-template");
-//   const cloneForm = getForm.content.cloneNode(true);
-//   const divForForm = createDomElement("div", { class: "conteiner_for_form" });
-//   divForForm.append(cloneForm);
-//   document.body.appendChild(divForForm);
-//   const pathToFormCar = document.forms[0].elements;
-//   dataIdElement = Number(divWithId.getAttribute("data_id"));
-
-//   for (let i = 0; i < arrElements.length; i++) {
-//     if (dataIdElement === arrElements[i].id) {
-//       elementForEditOnArr = arrElements.indexOf(arrElements[i]);
-//       pathToFormCar.name.value = arrElements[i].name;
-//       pathToFormCar.count.value = arrElements[i].count;
-//       pathToFormCar.price.value = arrElements[i].price;
-//       pathToFormCar.transmission.value = arrElements[i].transmission;
-//       if (arrElements[i].characteristics) {
-//         pathToFormCar.characteristics.value = arrElements[i].characteristics;
-//       }
-//       break;
-//     }
-//   }
-
-//   const buttonSave = document.querySelector(".save_info_button");
-//   buttonSave.addEventListener("click", () =>
-//     editElementProductOrCar(arrElements, pathToFormCar)
-//   );
-//   const buttonBack = document.querySelector(".back_to_list_button");
-//   buttonBack.addEventListener("click", deletForm);
-// }
-
-// function editUser(divWithId, arrElements) {
-//   // заполнение формы для редактирования пользователя
-//   const getForm = document.querySelector("#user-template");
-//   const cloneForm = getForm.content.cloneNode(true);
-//   const divForForm = createDomElement("div", { class: "conteiner_for_form" });
-//   divForForm.append(cloneForm);
-//   document.body.appendChild(divForForm);
-//   const pathToFormUser = document.forms[0].elements;
-//   dataIdElement = Number(divWithId.getAttribute("data_id"));
-
-//   for (let i = 0; i < arrElements.length; i++) {
-//     if (dataIdElement === arrElements[i].id) {
-//       elementForEditOnArr = arrElements.indexOf(arrElements[i]);
-//       pathToFormUser.firstname.value = arrElements[i].name;
-//       pathToFormUser.age.value = arrElements[i].age;
-//       pathToFormUser.email.value = arrElements[i].email;
-//       pathToFormUser.phonenumber.value = arrElements[i].tel;
-//       pathToFormUser.balance.value = arrElements[i].balance;
-//       pathToFormUser.bought_item.value = arrElements[i].boughtItem;
-//       break;
-//     }
-//   }
-
-//   const buttonSave = document.querySelector(".save_info_button");
-//   buttonSave.addEventListener("click", () =>
-//     editElementUser(arrElements, pathToFormUser)
-//   );
-//   const buttonBack = document.querySelector(".back_to_list_button");
-//   buttonBack.addEventListener("click", deletForm);
-// }
 
 function deletForm() {
   // удаляет форму
@@ -577,12 +482,12 @@ function createCustomerList(divWithId, arrElements) {
       })`
     );
     const inputForCount = createDomElement("input", {
-      type: "text",
+      type: "number",
       placeholder: "Enter a count product",
     });
     const buttonSell = createDomElement("button", {}, "sell");
-    buttonSell.addEventListener("click", () =>
-      sellItem(divWithId, arrElements, userDiv)
+    buttonSell.addEventListener("click", (e) =>
+      sellItem(e, divWithId, arrElements, userDiv)
     );
 
     nameUser.append(inputForCount);
@@ -594,7 +499,7 @@ function createCustomerList(divWithId, arrElements) {
   document.body.append(customerListConteiner);
 }
 
-function sellItem(divWithId, arrElements, userDivId) {
+function sellItem(event, divWithId, arrElements, userDivId) {
   let itemId = Number(divWithId.getAttribute("data_id"));
   let userId = Number(userDivId.getAttribute("data_user_id"));
   let countForBuy = Number(
@@ -622,12 +527,13 @@ function sellItem(divWithId, arrElements, userDivId) {
     }
   }
 
-  if (countForBuy <= Number(itemForSell.count)) {
+  if (countForBuy <= Number(itemForSell.count) && countForBuy > 0) {
     let totalPrice = countForBuy * itemForSell.price;
 
     if (totalPrice <= userWhoBuy.balance) {
       userWhoBuy.balance -= totalPrice;
       itemForSell.count -= countForBuy;
+
       if (itemForSell.count === 0) {
         buttonForDisabled.setAttribute("disabled", "disabled");
       }
@@ -636,6 +542,7 @@ function sellItem(divWithId, arrElements, userDivId) {
         name: itemForSell.name,
         count: countForBuy,
       };
+
       if (userWhoBuy.boughtItem.length === 0) {
         userWhoBuy.boughtItem.push(sellingItem);
       } else {
@@ -659,11 +566,24 @@ function sellItem(divWithId, arrElements, userDivId) {
         document.querySelector(".customer_list_conteiner")
       );
     } else {
-      alert("error");
+      showError(event, 'errorBalance')
     }
   } else {
-    alert("error");
+    showError(event, 'errorCount')
   }
 
   document.body.classList.toggle("stop-scrolling");
+}
+
+function showError(event, errorName) {
+  let arrErrors = ['errorCount', 'errorBalance',]
+
+  event.target.parentNode.querySelector('input').focus()
+  event.target.parentNode.querySelector('input').classList.add('error')
+  event.target.parentNode.classList.add(errorName)
+
+  setTimeout(()=> {
+    event.target.parentNode.querySelector('input').classList.remove('error')
+  event.target.parentNode.classList.remove(errorName)
+  }, 2500)
 }

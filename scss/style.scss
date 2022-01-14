@@ -21,6 +21,12 @@
     background-color: #f39422;
 }
 
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
     background: linear-gradient( to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('../images/wallpapers.jpg') center no-repeat;
@@ -134,7 +140,7 @@ main {
             cursor: pointer;
         }
 
-        .viev {
+        .view {
             background: url('../images/eye2.png') #fff;
             background-size: cover;
             background-position: center;
@@ -160,7 +166,7 @@ main {
             }
         }
 
-        .delet {
+        .delete {
             background: url('../images/delet.png') no-repeat #fff;
             background-size: 21px 19px;
             background-position: center;
@@ -284,6 +290,12 @@ main {
             outline: none;
         }
 
+        select {
+            option {
+                background: #272a34;
+            }
+        }
+
         input:-webkit-autofill {
         -webkit-box-shadow: 0 0 0px 1000px #272a34 inset !important;
         -webkit-text-fill-color: #ffffff !important;
@@ -371,6 +383,10 @@ main {
             color: rgba(255,255,255,.8) !important;
             background: transparent;
             outline: none;
+
+            &.error {
+                border-bottom: 1px solid rgb(252, 2, 2);
+            }
         }
 
         button {
@@ -385,6 +401,34 @@ main {
                 background: #e4820b;
                 border-color: #e4820b;
             }
+        }
+    }
+
+    .customer_list_user.errorCount {
+        position: relative;
+        &::after {
+            content: 'Unacceptable amount';
+            color: rgb(255, 0, 0);
+            font-size: 12px;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-65%);
+        }
+    }
+
+    .customer_list_user.errorBalance {
+        position: relative;
+
+        &::after {
+            content: 'The user does not have enough money';
+            color: rgb(255, 0, 0);
+            font-size: 12px;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            width: 100%;
+            transform: translateX(-35%);
         }
     }
 }
