@@ -21,6 +21,10 @@
     background-color: #f39422;
 }
 
+input.error {
+    border-color:  rgb(252, 2, 2) !important;
+}
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -57,6 +61,7 @@ header {
 .logo img {
     width: 150px;
     display: block;
+    cursor: pointer;
 }
 
 .btn-wrapper div {
@@ -68,6 +73,12 @@ header {
     border-radius: 9px;
     padding: 8px;
     transition: all linear 0.2s;
+
+    &.active {
+        pointer-events: none;
+        background-color: #fff;
+        color: #000;
+    }
 }
 
 .btn-wrapper div:hover {
@@ -91,7 +102,7 @@ main {
         display: block;
         width: 170px;
         padding: 16px 5px;
-        margin: 5px auto;
+        margin: 5px auto 20px;
         border-radius: 12px;
         color: #fff;
         border: none;
@@ -109,27 +120,21 @@ main {
     .List_element {
         border-bottom: 1px solid #fff;
         padding: 10px 5px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        background: rgba(0, 0, 0, 0.904);
 
-        h4 {
-            font-size: 20px;
-        }
+        .div_for_info {
+            flex-grow: 1;
 
-        ul {
-            display: none;
-            list-style: none;
-            li {
-                margin-bottom: 3px;
-                padding: 4px 10px;
-                border-radius: 8px;
-                background: #414141bf;
+            h4 {
+                font-size: 20px;
+                font-weight: 700;
+                margin-bottom: 5px;
             }
         }
 
-        ul.show {
-            display: block;
+
+        .div_for_button {
+            padding: 10px;
         }
 
         button {
@@ -197,6 +202,38 @@ main {
             pointer-events: none;
         }
     }
+}
+
+ul.information {
+    display: none;
+    list-style: none;
+
+    &.show {
+        display: flex;
+        width: 100%;
+    }
+
+    li {
+        margin-bottom: 3px;
+        border-radius: 8px;
+        flex-grow: 1;
+        max-width: 25%;
+
+        span {
+            display: block;
+            padding: 4px 10px;
+            border: 1px solid #fff;
+            height: 70px;
+            overflow: auto;
+            text-align: center;
+
+            &:first-of-type{
+                max-height: 40px;
+                margin-bottom: -1px;
+            }
+        }
+    }
+  
 }
 
 .confirmDelet {
@@ -274,6 +311,24 @@ main {
         p {
             text-align: center;
             margin: 0 0 16px 0;
+
+            &:nth-last-of-type(2) {
+                margin-bottom: 20px;
+            }
+
+            &.error {
+                position: relative;
+
+                &::after {
+                    content: 'Invalid value';
+                    color: rgb(255, 0, 0);
+                    font-size: 14px;
+                    position: absolute;
+                    top: 100%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+            }
         }
 
         input,
@@ -291,6 +346,10 @@ main {
         }
 
         select {
+            &.error {
+                border-bottom: 1px solid rgb(255, 0, 0);
+            }
+            
             option {
                 background: #272a34;
             }
@@ -384,9 +443,9 @@ main {
             background: transparent;
             outline: none;
 
-            &.error {
-                border-bottom: 1px solid rgb(252, 2, 2);
-            }
+            // &.error {
+            //     border-bottom: 1px solid rgb(252, 2, 2);
+            // }
         }
 
         button {

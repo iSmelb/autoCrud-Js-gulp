@@ -38,29 +38,67 @@ function setLocal(arrForset) {
   }
 }
 
+function mainPage() {
+  const logo = document.querySelector('.logo')
+  const cars =  document.querySelector('.Cars_Title')
+  const users =  document.querySelector('.User_Title')
+  const product =  document.querySelector('.Product_Title')
+
+  logo.addEventListener('click', () => {
+    document.querySelector('main').innerHTML = ''
+    cars.classList.remove('active')
+    users.classList.remove('active')
+    product.classList.remove('active')
+  })
+}
+
 function createMenu() {
   // функция которая создаёт меню Авто. Юзеры Продукты и вешает на каждый обработчик на создание списка
   const productTitle = createDomElement("div", { class: "Product_Title" });
   productTitle.innerText = "Products";
-  productTitle.addEventListener("click", () => createListElements(arrProducts));
+  productTitle.addEventListener("click", () => {
+    createListElements(arrProducts)
+    carsTitle.classList.remove('active')
+    userTitle.classList.remove('active')
+    productTitle.classList.add('active')
+  });
 
   const carsTitle = createDomElement("div", { class: "Cars_Title" });
   carsTitle.innerText = "Cars";
-  carsTitle.addEventListener("click", () => createListElements(arrCars));
+  carsTitle.addEventListener("click", () => {
+    createListElements(arrCars)
+    userTitle.classList.remove('active')
+    productTitle.classList.remove('active')
+    carsTitle.classList.add('active')
+  });
 
   const userTitle = createDomElement("div", { class: "User_Title" });
   userTitle.innerText = "Users";
-  userTitle.addEventListener("click", () => createListElements(arrUsers));
+  userTitle.addEventListener("click", () => {
+    createListElements(arrUsers)
+    productTitle.classList.remove('active')
+    carsTitle.classList.remove('active')
+    userTitle.classList.add('active')
+  });
 
   document
     .querySelector(".btn-wrapper")
     .append(productTitle, carsTitle, userTitle);
 }
 
+function removeActiveClass() {
+
+}
+
 function createUlinfo(ulForAdd, elementForSearch) {
   for (let key in elementForSearch) {
     const li = document.createElement("li");
-    li.innerText = key + ": " + elementForSearch[key];
+    const spanKey = document.createElement("span")
+    const spanValue = document.createElement("span")
+
+    spanKey.innerText = key
+    spanValue.innerText = elementForSearch[key]
+    li.append(spanKey, spanValue)
 
     if (key === "id") {
       continue;
@@ -71,8 +109,11 @@ function createUlinfo(ulForAdd, elementForSearch) {
       for (let i = 1; i < elementForSearch[key].length; i++) {
         textForLi += `${elementForSearch[key][i].name}(${elementForSearch[key][i].count}); `;
       }
-      li.innerText = key + ": " + textForLi;
+      spanKey.innerText = key
+      spanValue.innerText = textForLi
+      li.append(spanKey, spanValue)
     }
+
     ulForAdd.appendChild(li);
   }
 }
@@ -145,7 +186,7 @@ function deletElement(event, divWithId, arrElements) {
   const span = createDomElement(
     "span",
     {},
-    `Are u sure u want delet ${divWithId.querySelector("h4").innerText}?`
+    `Are u sure u want delete ${divWithId.querySelector("h4").innerText}?`
   );
   const buttonYes = createDomElement("button", {}, "Yes");
   buttonYes.addEventListener("click", () => {
@@ -393,39 +434,121 @@ function editElementUser(arrElements, pathToForm) {
   errorOrConfirm(saveAndEdit, arrElements);
 }
 
+function showErrorForm(path) {
+  path.parentElement.classList.add('error')
+  path.classList.add('error')
+  setTimeout(function () {
+    path.classList.remove('error')
+    path.parentElement.classList.remove('error')
+  }, 2500)
+}
+
+
 function errorOrConfirm(funcAfterValid, arrElements) {
+  const pathToForm = document.forms[0];
+
   if (arrElements === arrUsers) {
-    const pathToForm = document.forms[0];
     let formData = new FormData(pathToForm);
     let formDataObj = Object.fromEntries(formData);
-    if (!namePattern.test(formDataObj.firstname)) {
-      //   formDataObj.firstname.trim()
-      console.log("error");
-    } else if (!agePattern.test(formDataObj.age)) {
-      console.log("error");
-    } else if (!emailPattern.test(formDataObj.email)) {
-      console.log("error");
-    } else if (!phoneNumberPattern.test(formDataObj.phonenumber)) {
-      console.log("error");
-    } else if (!balancePattern.test(formDataObj.balance)) {
-      console.log("error");
-    } else {
+    let flag = validFormUser(formDataObj)
+    
+    if(flag) {
       funcAfterValid(arrElements);
     }
   } else if (arrElements === arrCars) {
-    const pathToForm = document.forms[0];
     let formData = new FormData(pathToForm);
     let formDataObj = Object.fromEntries(formData);
+    let flag = validFormCar(formDataObj)
 
-    funcAfterValid(arrElements)
+    if(flag) {
+      funcAfterValid(arrElements);
+    }
   } else if (arrElements === arrProducts) {
-    const pathToForm = document.forms[0];
     let formData = new FormData(pathToForm);
     let formDataObj = Object.fromEntries(formData);
+    let flag = validFormProduct(formDataObj)
 
-    funcAfterValid(arrElements)
+    if(flag) {
+      funcAfterValid(arrElements);
+    }
+  }
+}
+
+function validFormUser(formDataObj) {
+  let flag = true
+  if (!namePattern.test(formDataObj.firstname)) {
+    showErrorForm(document.forms[0].elements.firstname);
+    flag = false
   }
 
+  if (!agePattern.test(formDataObj.age)) {
+    showErrorForm(document.forms[0].elements.age)
+    flag = false;
+  }
+
+  if (!emailPattern.test(formDataObj.email)) {
+    showErrorForm(document.forms[0].elements.email)
+    flag = false;
+  }
+
+  if (!phoneNumberPattern.test(formDataObj.phonenumber)) {
+    showErrorForm(document.forms[0].elements.phonenumber)
+    flag = false;
+  }
+
+  if (!balancePricePattern.test(formDataObj.balance)) {
+    showErrorForm(document.forms[0].elements.balance)
+    flag = false;
+  }
+
+  return flag
+}
+
+function validFormProduct(formDataObj) {
+  let flag = true
+
+  if (!namePattern.test(formDataObj.name)) {
+    showErrorForm(document.forms[0].elements.name);
+    flag = false
+  }
+
+  if (!countItemForSell.test(formDataObj.count)) {
+    showErrorForm(document.forms[0].elements.count);
+    flag = false
+  }
+
+  if (!balancePricePattern.test(formDataObj.price)) {
+    showErrorForm(document.forms[0].elements.price);
+    flag = false
+  }
+
+  return flag
+}
+
+function validFormCar(formDataObj) {
+  let flag = true
+
+  if (!namePattern.test(formDataObj.name)) {
+    showErrorForm(document.forms[0].elements.name);
+    flag = false
+  }
+
+  if (!countItemForSell.test(formDataObj.count)) {
+    showErrorForm(document.forms[0].elements.count);
+    flag = false
+  }
+
+  if (!balancePricePattern.test(formDataObj.price)) {
+    showErrorForm(document.forms[0].elements.price);
+    flag = false
+  }
+
+  if(document.forms[0].elements.transmission.value === '') {
+    showErrorForm(document.forms[0].elements.transmission)
+    flag = false
+  }
+
+  return flag
 }
 
 function saveAndEdit(arrElements) {
@@ -576,14 +699,14 @@ function sellItem(event, divWithId, arrElements, userDivId) {
 }
 
 function showError(event, errorName) {
-  let arrErrors = ['errorCount', 'errorBalance',]
+  let arrErrors = ['errorCount', 'errorBalance', 'simpleError']
 
   event.target.parentNode.querySelector('input').focus()
   event.target.parentNode.querySelector('input').classList.add('error')
   event.target.parentNode.classList.add(errorName)
 
-  setTimeout(()=> {
+  setTimeout(() => {
     event.target.parentNode.querySelector('input').classList.remove('error')
-  event.target.parentNode.classList.remove(errorName)
+    event.target.parentNode.classList.remove(errorName)
   }, 2500)
 }
