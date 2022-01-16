@@ -1,0 +1,19 @@
+{
+  "name": "finalprojectjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hillel-Pupa/FinalProjectJs.git"
+  },
+  "author": "Ihor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hillel-Pupa/FinalProjectJs/issues"
+  },
+  "homepage": "https://github.com/Hillel-Pupa/FinalProjectJs#readme"
+}
