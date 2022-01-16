@@ -33,7 +33,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient( to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('../images/wallpapers.jpg') center no-repeat;
+    background: linear-gradient( to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('../../src/images/wallpapers.jpg') center no-repeat;
     background-size: cover;
     font-size: 22px;
 }
@@ -145,7 +145,7 @@ main {
         }
 
         .view {
-            background: url('../images/eye2.png') #fff;
+            background: url('../../src/images/eye2.png') #fff;
             background-size: cover;
             background-position: center;
             border: none;
@@ -158,7 +158,7 @@ main {
         }
 
         .edit {
-            background: url('../images/edit.png') no-repeat #fff;
+            background: url('../../src/images/edit.png') no-repeat #fff;
             background-size: 20px 18px;
             background-position: center;
             border: none;
@@ -171,7 +171,7 @@ main {
         }
 
         .delete {
-            background: url('../images/delet.png') no-repeat #fff;
+            background: url('../../src/images/delet.png') no-repeat #fff;
             background-size: 21px 19px;
             background-position: center;
             border: none;
@@ -184,7 +184,7 @@ main {
         }
 
         .sale {
-            background: url('../images/card.png') no-repeat #fff;
+            background: url('../../src/images/card.png') no-repeat #fff;
             background-size: 21px 19px;
             background-position: center;
             border: none;
@@ -439,10 +439,6 @@ ul.information {
             color: rgba(255,255,255,.8) !important;
             background: transparent;
             outline: none;
-
-            // &.error {
-            //     border-bottom: 1px solid rgb(252, 2, 2);
-            // }
         }
 
         button {

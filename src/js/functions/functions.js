@@ -688,14 +688,13 @@ function sellItem(event, divWithId, arrElements, userDivId) {
       document.body.removeChild(
         document.querySelector(".customer_list_conteiner")
       );
+      document.body.classList.toggle("stop-scrolling");
     } else {
       showError(event, 'errorBalance')
     }
   } else {
     showError(event, 'errorCount')
   }
-
-  document.body.classList.toggle("stop-scrolling");
 }
 
 function showError(event, errorName) {

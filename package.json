@@ -1,19 +1,25 @@
 {
-  "name": "finalprojectjs",
+  "name": "auto-crud-js-gulp",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Hillel-Pupa/FinalProjectJs.git"
-  },
-  "author": "Ihor",
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Hillel-Pupa/FinalProjectJs/issues"
-  },
-  "homepage": "https://github.com/Hillel-Pupa/FinalProjectJs#readme"
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-connect": "^5.7.0",
+    "gulp-sass": "^5.0.0",
+    "gulp-uglify": "^3.0.2",
+    "sass": "^1.44.0",
+    "uglify": "^0.1.5"
+  }
 }
